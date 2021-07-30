@@ -62,8 +62,10 @@ class RecipeViewSet(mixins.ListModelMixin,
             serializer = serializers.FavouriteSerializer(
                 recipe, context={'request': request})
             if serializer.is_valid():
-                return Response(data=serializer.data,
-                            status=status.HTTP_201_CREATED)
+                return Response(
+                    data=serializer.data,
+                    status=status.HTTP_201_CREATED
+                )
             data = {
                 'errors': 'Этот рецепт уже есть в избранном'
             }

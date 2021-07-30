@@ -70,7 +70,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def subscribe(self, request, pk):
         author = get_object_or_404(User, pk=pk)
         user = request.user
-        subscribed = user.subscribed_on.filter(author=author).exists()
         if request.method == 'GET':
             Subscription.objects.create(user=user, author=author)
             serializer = UserSerializer(
@@ -85,10 +84,7 @@ class UserViewSet(viewsets.ModelViewSet):
                            'или пытаетесь подписаться на себя, что невозможно')
             }
             return Response(data=data, status=status.HTTP_403_FORBIDDEN)
-        if not UserSerializer(
-                author,
-                context={'request': request}
-            ).is_valid():
+        if not UserSerializer(author, context={'request': request}).is_valid():
             data = {
                 'errors': ('Вы не подписаны на данного автора '
                            '(напоминание: на себя подписаться невозможно)')
