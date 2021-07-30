@@ -39,14 +39,14 @@ class Base64ImageField(serializers.ImageField):
 
 class TagSerializer(serializers.ModelSerializer):
 
-    class Meta():
+    class Meta:
         model = models.Tag
         fields = ('id', 'name', 'color', 'slug')
 
 
 class IngredientReadSerializer(serializers.ModelSerializer):
 
-    class Meta():
+    class Meta:
         model = models.Ingredient
         fields = ('id', 'name', 'measurement_unit')
         read_only_fields = ('id', 'name', 'measurement_unit')
@@ -56,7 +56,7 @@ class IngredientWriteSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     amount = serializers.IntegerField()
 
-    class Meta():
+    class Meta:
         model = models.Ingredient
         fields = ('id', 'amount')
 
@@ -68,7 +68,7 @@ class RecipeIngredientReadSerializer(serializers.ModelSerializer):
         source='ingredient.measurement_unit'
     )
 
-    class Meta():
+    class Meta:
         model = models.RecipeIngredient
         fields = ('id', 'name', 'amount', 'measurement_unit')
         read_only_fields = ('amount',)
@@ -81,7 +81,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
 
-    class Meta():
+    class Meta:
         model = models.Recipe
         fields = ('id', 'author', 'name', 'text', 'image',
                   'ingredients', 'tags', 'cooking_time',
@@ -108,7 +108,7 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         queryset=models.Tag.objects.all(), many=True
     )
 
-    class Meta():
+    class Meta:
         model = models.Recipe
         fields = ('id', 'author', 'name', 'text', 'image',
                   'ingredients', 'tags', 'cooking_time')
@@ -178,6 +178,6 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
 
 class FavouriteSerializer(serializers.ModelSerializer):
 
-    class Meta():
+    class Meta:
         model = models.Recipe
         fields = ('id', 'name', 'image', 'cooking_time')

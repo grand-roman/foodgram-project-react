@@ -58,17 +58,18 @@ class RecipeViewSet(mixins.ListModelMixin,
         recipe = get_object_or_404(models.Recipe, pk=pk)
         user = request.user
         if request.method == 'GET':
-            if not user.is_favorited.filter(recipe=recipe).exists():
-                models.Favourite.objects.create(user=user, recipe=recipe)
-                serializer = serializers.FavouriteSerializer(
-                    recipe, context={'request': request})
+            models.Favourite.objects.create(user=user, recipe=recipe)
+            serializer = serializers.FavouriteSerializer(
+                recipe, context={'request': request})
+            if serializer.is_valid():
                 return Response(data=serializer.data,
-                                status=status.HTTP_201_CREATED)
+                            status=status.HTTP_201_CREATED)
             data = {
                 'errors': 'Этот рецепт уже есть в избранном'
             }
             return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-        if not user.is_favorited.filter(recipe=recipe).exists():
+        if not serializers.FavouriteSerializer(
+                recipe, context={'request': request}).is_valid():
             data = {
                 'errors': 'Этого рецепта не было в вашем избранном'
             }
@@ -83,17 +84,18 @@ class RecipeViewSet(mixins.ListModelMixin,
         recipe = get_object_or_404(models.Recipe, pk=pk)
         user = request.user
         if request.method == 'GET':
-            if not user.is_in_shopping_cart.filter(recipe=recipe).exists():
-                models.ShoppingCart.objects.create(user=user, recipe=recipe)
-                serializer = serializers.FavouriteSerializer(
-                    recipe, context={'request': request})
+            models.ShoppingCart.objects.create(user=user, recipe=recipe)
+            serializer = serializers.FavouriteSerializer(
+                recipe, context={'request': request})
+            if serializer.is_valid():
                 return Response(data=serializer.data,
                                 status=status.HTTP_201_CREATED)
             data = {
                 'errors': 'Этот рецепт уже есть в списке покупок'
             }
             return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-        if not user.is_in_shopping_cart.filter(recipe=recipe).exists():
+        if not serializers.FavouriteSerializer(
+                recipe, context={'request': request}).is_valid():
             data = {
                 'errors': 'Этого рецепта не было в вашем списке покупок'
             }
