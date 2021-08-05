@@ -154,7 +154,7 @@ class FavouriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
-    
+
     def get_is_favorited(self, obj):
         user = self.context['request'].user
         if not user.is_authenticated:

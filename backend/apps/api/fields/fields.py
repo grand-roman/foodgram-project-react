@@ -6,6 +6,7 @@ import six
 from django.core import validators
 from django.core.files.base import ContentFile
 from django.db import models
+from rest_framework import serializers
 
 
 class ColorField(models.CharField):
