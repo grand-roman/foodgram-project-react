@@ -76,19 +76,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 author,
                 context={'request': request}
             )
-            if serializer.is_valid():
-                return Response(data=serializer.data,
-                                status=status.HTTP_201_CREATED)
-            data = {
-                'errors': ('Вы или уже подписаны на этого автора, '
-                           'или пытаетесь подписаться на себя, что невозможно')
-            }
-            return Response(data=data, status=status.HTTP_403_FORBIDDEN)
-        if not UserSerializer(author, context={'request': request}).is_valid():
-            data = {
-                'errors': ('Вы не подписаны на данного автора '
-                           '(напоминание: на себя подписаться невозможно)')
-            }
-            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data=serializer.data,
+                            status=status.HTTP_201_CREATED)
+
         Subscription.objects.filter(user=user, author=author).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

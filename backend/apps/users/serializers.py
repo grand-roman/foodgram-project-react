@@ -14,6 +14,9 @@ class SubRecipeSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    is_superuser = serializers.BooleanField(read_only=True)
+    email = serializers.EmailField()
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:

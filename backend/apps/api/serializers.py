@@ -1,44 +1,15 @@
-import base64
-import imghdr
-import uuid
-
-import six
 from django.contrib.auth import get_user_model
-from django.core.files.base import ContentFile
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
 from ..users.serializers import UserSerializer
 from . import models
+from .fields import Base64ImageField
 
 User = get_user_model()
 
 
-class Base64ImageField(serializers.ImageField):
-
-    def to_internal_value(self, data):
-        if isinstance(data, six.string_types):
-            if 'data:' in data and ';base64,' in data:
-                header, data = data.split(';base64,')
-            try:
-                decoded_file = base64.b64decode(data)
-            except TypeError:
-                self.fail('invalid_image')
-            file_name = str(uuid.uuid4())[:12]
-            file_extension = self.get_file_extension(file_name, decoded_file)
-            complete_file_name = '%s.%s' % (file_name, file_extension, )
-            data = ContentFile(decoded_file, name=complete_file_name)
-        return super().to_internal_value(data)
-
-    def get_file_extension(self, file_name, decoded_file):
-        extension = imghdr.what(file_name, decoded_file)
-        if extension == 'jpeg':
-            extension = 'jpg'
-        return extension  # noqa R504
-
-
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.Tag
         fields = ('id', 'name', 'color', 'slug')
@@ -177,7 +148,15 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
 
 
 class FavouriteSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(read_only=True)
+    is_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
+    
+    def get_is_favorited(self, obj):
+        user = self.context['request'].user
+        if not user.is_authenticated:
+            return False
+        return obj.is_favorited.filter(user=user).exists()
