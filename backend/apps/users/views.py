@@ -70,14 +70,26 @@ class UserViewSet(viewsets.ModelViewSet):
     def subscribe(self, request, pk):
         author = get_object_or_404(User, pk=pk)
         user = request.user
+        serializer = UserSerializer(
+            author,
+            context={'request': request}
+        )
         if request.method == 'GET':
             Subscription.objects.create(user=user, author=author)
-            serializer = UserSerializer(
-                author,
-                context={'request': request}
-            )
-            return Response(data=serializer.data,
-                            status=status.HTTP_201_CREATED)
+            if serializer.is_valid():
+                return Response(data=serializer.data,
+                                status=status.HTTP_201_CREATED)
+            data = {
+                'errors': ('Вы или уже подписаны на этого автора, '
+                           'или пытаетесь подписаться на себя, что невозможно')
+            }
+            return Response(data=data, status=status.HTTP_403_FORBIDDEN)
+        if not serializer.is_valid():
+            data = {
+                'errors': ('Вы не подписаны на данного автора '
+                           '(напоминание: на себя подписаться невозможно)')
+            }
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
         Subscription.objects.filter(user=user, author=author).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -33,6 +33,14 @@ class UserSerializer(serializers.ModelSerializer):
             return False
         return obj.subscriber.filter(user=user).exists()
 
+    def validate(self, obj):
+        if self.context['request'].method == 'GET':
+            if obj != self.context['request'].user:
+                raise serializers.ValidationError('ALREADY EXISTS')
+        if not obj != self.context['request'].user:
+            raise serializers.ValidationError('NOT FOUND')
+        return obj
+
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
