@@ -163,8 +163,12 @@ class FavouriteSerializer(serializers.ModelSerializer):
 
     def validate(self, obj):
         if self.context['request'].method == 'GET':
-            if obj.is_favorited.filter(author=self.context['request'].user).exists(): 
+            if obj.is_favorited.filter(
+                author=self.context['request'].user
+            ).exists():
                 raise serializers.ValidationError('ALREADY EXISTS')
-        if not obj.is_favorited.filter(author=self.context['request'].user).exists(): 
+        if not obj.is_favorited.filter(
+                author=self.context['request'].user
+            ).exists():
             raise serializers.ValidationError('NOT FOUND')
         return obj
