@@ -10,9 +10,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'web', '84.201.154.123']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'web', '130.193.40.147']
 
-CORS_ALLOWED_ORIGINS = ['http://84.201.154.123', 'http://127.0.0.1:8000', 'http://localhost:8000']
+CORS_ALLOWED_ORIGINS = ['http://130.193.40.147', 'http://127.0.0.1:8000', 'http://localhost:8000']
 
 CORS_URLS_REGEX = r'^/api/.*$'
 
