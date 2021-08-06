@@ -168,7 +168,7 @@ class FavouriteSerializer(serializers.ModelSerializer):
             ).exists():
                 raise serializers.ValidationError('ALREADY EXISTS')
         if not obj.is_favorited.filter(
-                author=self.context['request'].user
-            ).exists():
+            author=self.context['request'].user
+        ).exists():
             raise serializers.ValidationError('NOT FOUND')
         return obj
