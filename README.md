@@ -1,40 +1,71 @@
 # Проект Foodgram
+
+## Описание
+
 Cайт Foodgram, «Продуктовый помощник».
 На этом сервисе пользователи смогут публиковать рецепты, подписываться 
 на публикации других пользователей, добавлять понравившиеся рецепты в 
 список «Избранное», а перед походом в магазин скачивать сводный список 
 продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
-# Установка
-Склонируйте репозиторий.
-В корневой директории создайте файл `.env` со следующим содержанием:
-```
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=postgres
-POSTGRES_USER=  # ваш вариант
-POSTGRES_PASSWORD=  # ваш вариант
-DB_HOST=db
-DB_PORT=5432
-SECRET_KEY= # секретный ключ django проекта
+Тестовый пользователь: 
+- login: admin@yandex.ru
+- password: test
+
+Возможности сервиса:
+
+- Регистрация пользователей.
+- Создание, Изменение, Удаление рецептов.
+- Добавление рецептов в избранное и простмотр всех избранных рецептов.
+- Фильтрация рецептов по тегам.
+- Подписка на авторов и просмотр рецептов определенного автора.
+- Добавление рецептов и формирование списка покупок для их приготовления.
+
+- ###Установка
+Для работы с проектом необходимо установить Docker: <https://docs.docker.com/engine/install/>
+
+
+ - Клонируйте репозиторий к себе на сервер командой:
+```bash
+https://github.com/grand-roman/foodgram-project-react
 ```
 
-Для запуска сервера на локальной машине выполните команды:
+Перейдите в каталок проекта:
+```bash
+cd foodgram-project-react
 ```
-Первый запуск
-docker-compose up -d
-после запуска контейнеров
-docker-compose exec web python manage.py migrate
-docker-compose exec web python manage.py createsuperuser
-docker-compose exec web python manage.py collectstatic --no-input
-
-Последующие запуски
-docker-compose up -d
-
+Создайте файл окружений
+```bash
+touch .env
 ```
-Документацию к проекту можно посмотреть на странице `api/docs`.
-Администрирование доступно на странице `/admin`.
-Проект будет запущен и доступен по адресу [localhost](http://localhost).
+И заполните его:
+```bash
+POSTGRES_NAME=postgres  # имя базы postgres
+POSTGRES_USER=postgres # имя пользователя postgres
+POSTGRES_PASSWORD=postgres # пароль для базы postgres
+DB_HOST=postgresql   #имя хоста базы данных
+DB_PORT=5432  #порт
+```
 
-Ознакомиться с уже развёрнутым проектом можно по адресу [Foodgram](http://84.201.166.123).
+
+Перейдите в каталог infra и запустите создание контейнеров:
+```bash
+docker-compose up -d --build
+```
+
+Первоначальная настройка проекта:
+```bash
+- docker-compose exec backend python manage.py migrate --noinput
+- docker-compose exec backend python manage.py collectstatic --no-input
+```
+Создание суперпользователя:
+```bash
+- docker-compose exec backend python manage.py createsuperuser
+```
+Загрузка фикстур
+```bash
+docker exec -it backend python manage.py loaddata fixtures.json
+```
+После сборки, проект будет доступен по имени хоста вашей машины, на которой был развернут проект. 
 
 ![Foodgram workflow](https://github.com/grand-roman/foodgram-project-react/actions/workflows/main.yml/badge.svg)
