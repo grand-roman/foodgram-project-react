@@ -8,11 +8,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'web', '84.201.166.123']
 
-CORS_ALLOWED_ORIGINS = ['http://84.201.166.123', 'http://127.0.0.1:8000', 'http://localhost:8000']
+CORS_ALLOWED_ORIGINS = ['http://84.201.166.123:8000', 'http://127.0.0.1:8000', 'http://localhost:8000']
 
 CORS_URLS_REGEX = r'^/api/.*$'
 
