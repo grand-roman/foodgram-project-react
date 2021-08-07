@@ -290,12 +290,13 @@ class ShoppingCartSerializer(FavoriteSerializer):
     def validate(self, data):
         user = self.context.get('request').user
         recipe_id = data['recipe'].id
-        if (self.context.get('request').method == 'GET'
+        if (
+            self.context.get('request').method == 'GET'
                 and ShoppingCart.objects.filter(
                     user=user,
                     recipe__id=recipe_id
                 ).exists()
-            ):
+        ):
             raise serializers.ValidationError(
                 'Продукты уже в корзине')
 
