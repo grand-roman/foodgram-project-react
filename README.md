@@ -45,6 +45,7 @@ POSTGRES_USER=postgres # имя пользователя postgres
 POSTGRES_PASSWORD=postgres # пароль для базы postgres
 DB_HOST=postgresql   #имя хоста базы данных
 DB_PORT=5432  #порт
+SECRET_KEY= # Ключ
 ```
 
 
