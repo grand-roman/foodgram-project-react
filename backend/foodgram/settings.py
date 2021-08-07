@@ -8,13 +8,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'web', '130.193.40.147']
-
-CORS_ALLOWED_ORIGINS = ['http://130.193.40.147', 'http://127.0.0.1:8000', 'http://localhost:8000']
-
-CORS_URLS_REGEX = r'^/api/.*$'
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
