@@ -60,9 +60,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           stack_file_name: docker-compose.yml
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram
-            sudo docker-compose stop
-            sudo docker-compose rm web
+            cd foodgram-project-react
             touch .env 
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -72,6 +70,10 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+            cd infra
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram
+            sudo docker-compose stop
+            sudo docker-compose rm infra_backend_1
             sudo docker-compose up -d
 
 
