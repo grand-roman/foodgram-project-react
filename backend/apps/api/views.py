@@ -70,7 +70,7 @@ class RecipeViewSet(mixins.ListModelMixin,
                 )
         if serializer.is_valid():
             models.Favourite.objects.filter(user=user, recipe=recipe).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True,
             methods=['get', 'delete'],
@@ -88,8 +88,11 @@ class RecipeViewSet(mixins.ListModelMixin,
                 return Response(data=serializer.data,
                                 status=status.HTTP_201_CREATED)
         if serializer.is_valid():
-            models.ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            models.ShoppingCart.objects.filter(
+                user=user,
+                recipe=recipe
+            ).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False,
             methods=['get'],
