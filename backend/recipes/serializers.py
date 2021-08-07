@@ -178,8 +178,10 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         for item in ingredients:
             if int(item['amount']) < 0:
                 raise serializers.ValidationError(
-                    {'ingredients': (
-                        'Убедитесь, что значение количества ингредиента больше 0')
+                    {
+                        'ingredients': (
+                            'Убедитесь, что количества ингредиента больше 0'
+                        )
                     }
                 )
         return data
@@ -292,7 +294,8 @@ class ShoppingCartSerializer(FavoriteSerializer):
                 and ShoppingCart.objects.filter(
                     user=user,
                     recipe__id=recipe_id
-                ).exists()):
+                ).exists()
+            ):
             raise serializers.ValidationError(
                 'Продукты уже в корзине')
 
