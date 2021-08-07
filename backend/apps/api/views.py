@@ -68,18 +68,9 @@ class RecipeViewSet(mixins.ListModelMixin,
                     data=serializer.data,
                     status=status.HTTP_201_CREATED
                 )
-            data = {
-                'errors': 'Этот рецепт уже есть в избранном'
-            }
-            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-        if not serializer.is_valid():
-            data = {
-                'errors': 'Этого рецепта не было в вашем избранном'
-            }
-            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-
-        models.Favourite.objects.filter(user=user, recipe=recipe).delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if serializer.is_valid():
+            models.Favourite.objects.filter(user=user, recipe=recipe).delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True,
             methods=['get', 'delete'],
@@ -96,18 +87,9 @@ class RecipeViewSet(mixins.ListModelMixin,
             if serializer.is_valid():
                 return Response(data=serializer.data,
                                 status=status.HTTP_201_CREATED)
-            data = {
-                'errors': 'Этот рецепт уже есть в избранном'
-            }
-            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-        if not serializer.is_valid():
-            data = {
-                'errors': 'Этого рецепта не было в вашем избранном'
-            }
-            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
-
-        models.ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if serializer.is_valid():
+            models.ShoppingCart.objects.filter(user=user, recipe=recipe).delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False,
             methods=['get'],
