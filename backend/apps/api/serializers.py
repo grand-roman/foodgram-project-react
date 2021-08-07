@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 
 from ..users.serializers import UserSerializer
 from . import models
-from .fields import Base64ImageField
+from .fields.fields import Base64ImageField
 
 User = get_user_model()
 
