@@ -10,6 +10,8 @@ class RecipeAdmin(admin.ModelAdmin):
               'image',
               'text',
               'cooking_time',
+              'tags',
+              'ingredients'
               )
     readonly_fields = (
         'pub_date',
