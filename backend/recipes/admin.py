@@ -64,6 +64,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'recipe'
     )
 
+
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
     list_display = (
