@@ -1,17 +1,16 @@
 from django.contrib import admin
 
-from .models import Recipe, Ingredient, Tag, ShoppingCart, Favorite
+from .models import Favorite, Follow, Ingredient, Recipe, ShoppingCart, Tag
 
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
+    filter_horizontal = ["ingredients", "tags"]
     fields = ('author',
               'name',
               'image',
               'text',
               'cooking_time',
-              'tags',
-              'ingredients'
               )
     readonly_fields = (
         'pub_date',
@@ -63,4 +62,12 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     search_fields = (
         'user',
         'recipe'
+    )
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'user',
+        'author',
     )

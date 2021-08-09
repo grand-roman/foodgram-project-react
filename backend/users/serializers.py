@@ -1,9 +1,7 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from rest_framework import serializers
-
 from recipes.models import Follow
+from rest_framework import serializers
 
 User = get_user_model()
 
@@ -36,8 +34,7 @@ class UserDetailSerializer(UserSerializer):
         request = self.context.get('request')
         if request is None or request.user.is_anonymous:
             return False
-        return (Follow.objects.filter(user=request.user, author=obj).exists()
-                or request.user == obj)
+        return Follow.objects.filter(user=request.user, author=obj).exists()
 
 
 class AuthTokenSerializer(serializers.Serializer):
